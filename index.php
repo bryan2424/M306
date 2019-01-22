@@ -2,7 +2,7 @@
 /*
 Projet: M306 - Annonces
 Description: Page de connexion
-Auteur: Jacot-dit-Montandon ludovic, Villafuerte Bryan, Burnand Loic
+Auteur: Jacot-dit-Montandon Ludovic, Villafuerte Bryan, Burnand Loic
 Version: 1.0
 Date: 2018-19
 */
@@ -20,7 +20,7 @@ if(!empty($email) && !empty($password))
 {
     //userExist($email,$password);
     $_SESSION["email"] = $email;
-    header("Location: index.php#login=true");
+    header("Location: index.php?login=true");
 }
 
 ?>
@@ -30,25 +30,13 @@ if(!empty($email) && !empty($password))
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
-        <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
         <meta name="generator" content="Jekyll v3.8.5">
         <title>M306 - Annonces</title>
 
-        <!-- Bootstrap core CSS -->
+        <!-- Insert CSS -->
         <link href="bootstrap-4.2.1-dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-
-        <style>
-            .bd-placeholder-img {
-                font-size: 1.125rem;
-                text-anchor: middle;
-            }
-
-            @media (min-width: 768px) {
-                .bd-placeholder-img-lg {
-                    font-size: 3.5rem;
-                }
-            }
-        </style>
+        <link href="css/style.css" rel="stylesheet" type="text/css"/>
+        
         <!-- Custom styles for this template -->
         <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
         <!-- Custom styles for this template -->
