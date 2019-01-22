@@ -1,28 +1,42 @@
+<?php 
+/*
+Projet: M306 - Annonces
+Description: Page de connexion
+Auteur: Jacot-dit-Montandon Ludovic, Villafuerte Bryan, Burnand Loic
+Version: 1.0
+Date: 2018-19
+*/
+session_start();
+
+if(isset($_POST["email"]))
+{
+    $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
+}
+if(isset($_POST["password"]))
+{
+    $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
+}
+if(!empty($email) && !empty($password))
+{
+    //userExist($email,$password);
+    $_SESSION["email"] = $email;
+    header("Location: index.php?login=true");
+}
+
+?>
 <!doctype html>
 <html>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
-        <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
         <meta name="generator" content="Jekyll v3.8.5">
         <title>M306 - Annonces</title>
 
-        <!-- Bootstrap core CSS -->
+        <!-- Insert CSS -->
         <link href="bootstrap-4.2.1-dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-
-        <style>
-            .bd-placeholder-img {
-                font-size: 1.125rem;
-                text-anchor: middle;
-            }
-
-            @media (min-width: 768px) {
-                .bd-placeholder-img-lg {
-                    font-size: 3.5rem;
-                }
-            }
-        </style>
+        <link href="css/style.css" rel="stylesheet" type="text/css"/>
+        
         <!-- Custom styles for this template -->
         <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
         <!-- Custom styles for this template -->
@@ -61,7 +75,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
+                            <form action="#" method="POST">
                                 <div class="form-group">
                                     <label for="email" class="col-form-label">Email:</label>
                                     <input type="email" class="form-control" id="recipient-name">
@@ -70,11 +84,11 @@
                                     <label for="password" class="col-form-label">Mot de passe:</label>
                                     <input type="password" class="form-control" id="recipient-name">
                                 </div>
-                            </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                            <button type="button" class="btn btn-primary">Se connecter</button>
+                            <button type="submit" class="btn btn-primary">Se connecter</button>
+                            </form>
                         </div>
                     </div>
                 </div>
