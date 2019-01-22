@@ -1,3 +1,29 @@
+<?php 
+/*
+Projet: M306 - Annonces
+Description: Page de connexion
+Auteur: Jacot-dit-Montandon ludovic, Villafuerte Bryan, Burnand Loic
+Version: 1.0
+Date: 2018-19
+*/
+session_start();
+
+if(isset($_POST["email"]))
+{
+    $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
+}
+if(isset($_POST["password"]))
+{
+    $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
+}
+if(!empty($email) && !empty($password))
+{
+    //userExist($email,$password);
+    $_SESSION["email"] = $email;
+    header("Location: index.php#login=true");
+}
+
+?>
 <!doctype html>
 <html>
     <head>
@@ -61,7 +87,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
+                            <form action="#" method="POST">
                                 <div class="form-group">
                                     <label for="email" class="col-form-label">Email:</label>
                                     <input type="email" class="form-control" id="recipient-name">
@@ -70,11 +96,11 @@
                                     <label for="password" class="col-form-label">Mot de passe:</label>
                                     <input type="password" class="form-control" id="recipient-name">
                                 </div>
-                            </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                            <button type="button" class="btn btn-primary">Se connecter</button>
+                            <button type="submit" class="btn btn-primary">Se connecter</button>
+                            </form>
                         </div>
                     </div>
                 </div>
