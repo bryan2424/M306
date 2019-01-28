@@ -1,28 +1,24 @@
-<?php 
+<?php
 /*
-Projet: M306 - Annonces
-Description: Page de connexion
-Auteur: Jacot-dit-Montandon Ludovic, Villafuerte Bryan, Burnand Loic
-Version: 1.0
-Date: 2018-19
-*/
+  Projet: M306 - Annonces
+  Description: Page de connexion
+  Auteur: Jacot-dit-Montandon Ludovic, Villafuerte Bryan, Burnand Loic
+  Version: 1.0
+  Date: 2018-19
+ */
 session_start();
 
-if(isset($_POST["email"]))
-{
+if (isset($_POST["email"])) {
     $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
 }
-if(isset($_POST["password"]))
-{
+if (isset($_POST["password"])) {
     $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
 }
-if(!empty($email) && !empty($password))
-{
+if (!empty($email) && !empty($password)) {
     //userExist($email,$password);
     $_SESSION["email"] = $email;
     header("Location: index.php?login=true");
 }
-
 ?>
 <!doctype html>
 <html>
@@ -36,7 +32,7 @@ if(!empty($email) && !empty($password))
         <!-- Insert CSS -->
         <link href="bootstrap-4.2.1-dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <link href="css/style.css" rel="stylesheet" type="text/css"/>
-        
+
         <!-- Custom styles for this template -->
         <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
         <!-- Custom styles for this template -->
@@ -47,7 +43,7 @@ if(!empty($email) && !empty($password))
             <header class="blog-header py-3">
                 <div class="row flex-nowrap justify-content-between align-items-center">
                     <div class="col-4 pt-1">
-                        <a class="text-muted" href="#">Subscribe</a>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#postModal" data-whatever="@mdo">Ajouter</button>
                     </div>
                     <div class="col-4 text-center">
                         <a class="blog-header-logo text-dark" href="#">M306</a>
@@ -62,9 +58,9 @@ if(!empty($email) && !empty($password))
                 </div>
             </header>
 
-            <?php include 'navigation.php'; ?>
+<?php include 'navigation.php'; ?>
 
-            <!-- Modal -->
+            <!-- Modal Login -->
             <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -78,11 +74,11 @@ if(!empty($email) && !empty($password))
                             <form action="#" method="POST">
                                 <div class="form-group">
                                     <label for="email" class="col-form-label">Email:</label>
-                                    <input type="email" class="form-control" id="recipient-name">
+                                    <input type="email" class="form-control" id="email">
                                 </div>
                                 <div class="form-group">
                                     <label for="password" class="col-form-label">Mot de passe:</label>
-                                    <input type="password" class="form-control" id="recipient-name">
+                                    <input type="password" class="form-control" id="mdp">
                                 </div>
                         </div>
                         <div class="modal-footer">
@@ -93,17 +89,54 @@ if(!empty($email) && !empty($password))
                     </div>
                 </div>
             </div>
-            <!-- JS code -->
-            <script src="https://code.jquery.com/jquery-3.1.1.min.js">
-            </script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js">
-            </script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js">
-            </script>
             <!--modal-->
             <script>
                 $(document).ready(function () {
                     $("#loginModal").modal();
+                });
+            </script>
+            
+            <!-- Modal Post-->
+            <div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Ajouter une annonce</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="#" method="POST" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="title" class="col-form-label">Titre:</label>
+                                    <input type="text" class="form-control" id="title">
+                                </div>
+                                <div class="form-group">
+                                    <label for="description" class="col-form-label">Description:</label>
+                                    <textarea type="text" class="form-control" id="description"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="price" class="col-form-label">Prix:</label>
+                                    <input type="number" class="form-control" id="price">
+                                </div>
+                                <div class="form-group">
+                                    <label for="photo" class="col-form-label">Photo:</label>
+                                    <input type="file" class="form-control" id="photo">
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                            <button type="submit" class="btn btn-primary">Ajouter</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--modal-->
+            <script>
+                $(document).ready(function () {
+                    $("#postModal").modal();
                 });
             </script>
 
@@ -154,6 +187,14 @@ if(!empty($email) && !empty($password))
                 <a href="#">Retour en haut</a>
             </p>
         </footer>
+
+        <!-- JS code -->
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js">
+        </script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js">
+        </script>
         <script src="bootstrap-4.2.1-dist/js/bootstrap.min.js" type="text/javascript"></script>
     </body>
 </html>
