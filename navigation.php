@@ -18,7 +18,7 @@ require_once 'bdd.php';
         //Pour chaques catégories, un lien est créé avec un paramètre sur la page index
         foreach($arrTypes as $types)
         {
-        echo '<a class="p-2 text-muted" href="index.php?types="'. $types["IdType"] .'>'. $types["Name"] .'</a>';
+        echo '<a class="p-2 text-muted" href="index.php?types='. $types["IdType"] .'">'. $types["Name"] .'</a>';
         }
         
         ?>
