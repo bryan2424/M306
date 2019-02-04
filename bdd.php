@@ -94,6 +94,7 @@ function getAllUsers() {
     }
 }
 
+
 function getTypes() {
     try {
         $db = connectDB();
@@ -101,6 +102,25 @@ function getTypes() {
         $query->execute();
         $resultat = $query->fetchAll(PDO::FETCH_ASSOC);
         return $resultat;
+    } catch (Exception $e) {
+        die('Erreur : ' . $e->getMessage());
+    }
+}
+
+/**
+ * Insert une nouvelle annonces dans la base de données 
+ */
+function insertPost($name, $description, $prix, $iduser, $idtype){
+    try {
+        $db = connectDB();
+        $query = $db->prepare('INSERT INTO `annonces`(`Name`, `Description`, `Prix`, `IdUser`, `IdType`) VALUES (:name, :description, :prix, :iduser, :idtype)');
+        $query->bindParam(":name", $name, PDO::PARAM_INT);
+        $query->bindParam(":description", $description, PDO::PARAM_INT);
+        $query->bindParam(":prix", $prix, PDO::PARAM_INT);
+        $query->bindParam(":iduser", $iduser, PDO::PARAM_INT);
+        $query->bindParam(":idtype", $idtype, PDO::PARAM_INT);
+        $query->execute();
+        return true;
     } catch (Exception $e) {
         die('Erreur : ' . $e->getMessage());
     }

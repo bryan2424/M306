@@ -17,6 +17,7 @@ if (isset($_POST["password"])) {
 if (!empty($email) && !empty($password)) {
     //userExist($email,$password);
     $_SESSION["email"] = $email;
+    $_SESSION["IdUser"] = 
     header("Location: index.php?login=true");
 }
 ?>
@@ -58,7 +59,7 @@ if (!empty($email) && !empty($password)) {
                 </div>
             </header>
 
-<?php include 'navigation.php'; ?>
+            <?php include 'navigation.php'; ?>
 
             <!-- Modal Login -->
             <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -95,7 +96,7 @@ if (!empty($email) && !empty($password)) {
                     $("#loginModal").modal();
                 });
             </script>
-            
+
             <!-- Modal Post-->
             <div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -107,22 +108,33 @@ if (!empty($email) && !empty($password)) {
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="#" method="POST" enctype="multipart/form-data">
+                            <form action="ajouterAnnonce.php" method="POST" enctype="multipart/form-data">
                                 <div class="form-group">
                                     <label for="title" class="col-form-label">Titre:</label>
-                                    <input type="text" class="form-control" id="title">
+                                    <input type="text" class="form-control" name="title">
                                 </div>
                                 <div class="form-group">
                                     <label for="description" class="col-form-label">Description:</label>
-                                    <textarea type="text" class="form-control" id="description"></textarea>
+                                    <textarea type="text" class="form-control" name="description" ></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label for="price" class="col-form-label">Prix:</label>
-                                    <input type="number" class="form-control" id="price">
+                                    <input type="number" class="form-control" name="price">
                                 </div>
                                 <div class="form-group">
                                     <label for="photo" class="col-form-label">Photo:</label>
-                                    <input type="file" class="form-control" id="photo">
+                                    <input type="file" class="form-control" name="photo">
+                                </div>
+                                <div class="form-group">
+                                    <label for="type" class="col-form-label">Catégorie:</label>
+                                    <select name="type" class="form-control">
+                                        <?php
+                                        $arrTypes = getTypes();
+                                        foreach ($arrTypes as $types) {
+                                            echo '<option class="form-control" value="' . $types["IdType"] . '">' . $types["Name"] . '</option>';
+                                        }
+                                        ?>
+                                    </select>
                                 </div>
                         </div>
                         <div class="modal-footer">
