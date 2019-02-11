@@ -8,6 +8,9 @@
  */
 session_start();
 require_once 'phpToHtml.php';
+require_once 'bdd.php';
+
+$arrAnnonce = getAnnonces();
 
 if (isset($_POST["email"])) {
     $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
@@ -18,8 +21,7 @@ if (isset($_POST["password"])) {
 if (!empty($email) && !empty($password)) {
     //userExist($email,$password);
     $_SESSION["email"] = $email;
-    $_SESSION["IdUser"] = 
-    header("Location: index.php?login=true");
+    $_SESSION["IdUser"] = header("Location: index.php?login=true");
 }
 ?>
 <!doctype html>
@@ -63,7 +65,7 @@ if (!empty($email) && !empty($password)) {
             <?php include 'navigation.php'; ?>
 
             <!-- Modal Login -->
-            <?php 
+            <?php
             formLogin();
             ?>
 
@@ -129,36 +131,28 @@ if (!empty($email) && !empty($password)) {
                     <p class="lead mb-0"><a href="#" class="text-white font-weight-bold">La couleure de fond varie pour chaque catégorie</a></p>
                 </div>
             </div>
-
             <div class="row mb-2">
-                <div class="col-md-6">
-                    <div class="card flex-md-row mb-4 shadow-sm h-md-250">
-                        <div class="card-body d-flex flex-column align-items-start">
-                            <strong class="d-inline-block mb-2 text-primary">World</strong>
-                            <h3 class="mb-0">
-                                <a class="text-dark" href="#">Featured post</a>
-                            </h3>
-                            <div class="mb-1 text-muted">Nov 12</div>
-                            <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-                            <a href="#">Continue reading</a>
+                <?php
+                var_dump($arrAnnonce);
+                foreach ($arrAnnonce as $annonces) {
+                    ?>
+                    <div class="col-md-6">
+                        <div class="card flex-md-row mb-4 shadow-sm h-md-250">
+                            <div class="card-body d-flex flex-column align-items-start">
+                                <strong class="d-inline-block mb-2 text-primary"><?php echo $_GET["types"];?></strong>
+                                <h3 class="mb-0">
+                                    <a class="text-dark" href="#"><?php echo $annonces["Name"];?></a>
+                                </h3>
+                                <div class="mb-1 text-muted">Prix : <?php echo $annonces["Prix"];?>.- frs</div>
+                                <p class="card-text mb-auto"><?php echo $annonces["Description"]; ?></p>
+                                <a href="#">Continue reading</a>
+                            </div>
+                            <svg class="bd-placeholder-img card-img-right flex-auto d-none d-lg-block" width="200" height="250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect fill="#55595c" width="100%" height="100%"></rect><text fill="#eceeef" dy=".3em" x="50%" y="50%">Thumbnail</text></svg>
                         </div>
-                        <svg class="bd-placeholder-img card-img-right flex-auto d-none d-lg-block" width="200" height="250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect fill="#55595c" width="100%" height="100%"></rect><text fill="#eceeef" dy=".3em" x="50%" y="50%">Thumbnail</text></svg>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card flex-md-row mb-4 shadow-sm h-md-250">
-                        <div class="card-body d-flex flex-column align-items-start">
-                            <strong class="d-inline-block mb-2 text-success">Design</strong>
-                            <h3 class="mb-0">
-                                <a class="text-dark" href="#">Post title</a>
-                            </h3>
-                            <div class="mb-1 text-muted">Nov 11</div>
-                            <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-                            <a href="#">Continue reading</a>
-                        </div>
-                        <svg class="bd-placeholder-img card-img-right flex-auto d-none d-lg-block" width="200" height="250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect fill="#55595c" width="100%" height="100%"></rect><text fill="#eceeef" dy=".3em" x="50%" y="50%">Thumbnail</text></svg>
-                    </div>
-                </div>
+                    </div> 
+                    <?php
+                }
+                ?>
             </div>
         </div>
         <footer class="blog-footer text-center">

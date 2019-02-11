@@ -107,6 +107,18 @@ function getTypes() {
     }
 }
 
+function getAnnonces() {
+    try {
+        $db = connectDB();
+        $query = $db->prepare('SELECT Name, Description, Prix, IdUser, IdType FROM ANNONCES');
+        $query->execute();
+        $resultat = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $resultat;
+    } catch (Exception $e) {
+        die('Erreur : ' . $e->getMessage());
+    }
+}
+
 /**
  * Insert une nouvelle annonces dans la base de données 
  */
