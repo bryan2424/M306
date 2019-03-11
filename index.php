@@ -101,7 +101,7 @@ if (!empty($email) && !empty($password)) {
                 $(document).ready(function () {
                     $("#loginModal").modal();
                 });
-            </script>'
+            </script>
 
             <!-- Modal Post-->
             <div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
