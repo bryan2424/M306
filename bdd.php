@@ -145,13 +145,15 @@ function getAnnoncesByType($idType) {
 /**
  * Insert une nouvelle annonces dans la base de données 
  */
-function insertPost($name, $description, $prix, $iduser, $idtype){
+function insertPost($name, $description, $prix, $nomImage, $typeImage, $iduser, $idtype){
     try {
         $db = connectDB();
-        $query = $db->prepare('INSERT INTO `annonces`(`Name`, `Description`, `Prix`, `IdUser`, `IdType`) VALUES (:name, :description, :prix, :iduser, :idtype)');
-        $query->bindParam(":name", $name, PDO::PARAM_INT);
-        $query->bindParam(":description", $description, PDO::PARAM_INT);
-        $query->bindParam(":prix", $prix, PDO::PARAM_INT);
+        $query = $db->prepare('INSERT INTO `annonces`(`Name`, `Description`, `Prix`, `IdUser`, `nomImage`, `typeImage`, `IdType`) VALUES (:name, :description, :prix, :nomImage, :typeImage, :iduser, :idtype)');
+        $query->bindParam(":name", $name, PDO::PARAM_STR);
+        $query->bindParam(":description", $description, PDO::PARAM_STR);
+        $query->bindParam(":prix", $prix, PDO::PARAM_STR);
+        $query->bindParam(":nomImage", $nomImage, PDO::PARAM_STR);
+        $query->bindParam(":typeImage", $typeImage, PDO::PARAM_STR);
         $query->bindParam(":iduser", $iduser, PDO::PARAM_INT);
         $query->bindParam(":idtype", $idtype, PDO::PARAM_INT);
         $query->execute();
@@ -159,4 +161,26 @@ function insertPost($name, $description, $prix, $iduser, $idtype){
     } catch (Exception $e) {
         die('Erreur : ' . $e->getMessage());
     }
+}
+
+function userExist($email, $mdp) {
+    try {
+        $connexion = connectDb();
+        $requete = $connexion->prepare("SELECT * FROM users WHERE email= :email AND Password = :Password");
+        $requete->bindParam(":email", $email, PDO::PARAM_INT);
+        $requete->bindParam(":Password", $mdp, PDO::PARAM_INT);
+        $requete->execute();
+        $resultat = $requete->fetchAll(PDO::FETCH_ASSOC);
+        return $resultat;
+    } catch (Exception $e) {
+        die('Erreur : ' . $e->getMessage());
+    }
+}
+
+function getUserId($email) {
+    $db = connectDb();
+    $sql = "SELECT idUser FROM users WHERE email = :email";
+    $request = $db->prepare($sql);
+    $request->execute(array('email' => $email));
+    return $request->fetch();
 }

@@ -6,8 +6,6 @@
   Version: 1.0
   Date: 2018-19
  */
-session_start();
-require_once 'phpToHtml.php';
 require_once 'bdd.php';
 
 $arrTypes = getTypes();
@@ -21,9 +19,12 @@ if (isset($_POST["password"])) {
     $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
 }
 if (!empty($email) && !empty($password)) {
-    //userExist($email,$password);
+    userExist($email,$password);
+    session_start();
     $_SESSION["email"] = $email;
-    $_SESSION["IdUser"] = header("Location: index.php?login=true");
+    $idUser = getUserId($email);
+    $_SESSION["idUser"] = $idUser[0];
+    $_SESSION["login"] = true;
 }
 ?>
 <!doctype html>
@@ -49,14 +50,17 @@ if (!empty($email) && !empty($password)) {
             <header class="blog-header py-3">
                 <div class="row flex-nowrap justify-content-between align-items-center">
                     <div class="col-4 pt-1">
-                        <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#postModal" data-whatever="@mdo">Ajouter</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#postModal">Ajouter</button>
                     </div>
                     <div class="col-4 text-center">
                         <a class="blog-header-logo text-dark" href="#">M306</a>
                     </div>
-
                     <div class="col-4 d-flex justify-content-end align-items-center">
-                        <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#loginModal" data-whatever="@mdo">Connexion</button>
+                        <?php if(!isset($_SESSION["login"])) { ?>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#loginModal">Connexion</button>
+                        <?php } else{?>
+                        <button type="button" class="btn btn-sm btn-outline-secondary"><a href="logout.php">Deconnexion</a></button>
+                        <?php }?>
                     </div>
                 </div>
             </header>
@@ -64,9 +68,40 @@ if (!empty($email) && !empty($password)) {
             <?php include 'navigation.php'; ?>
 
             <!-- Modal Login -->
-            <?php
-            formLogin();
-            ?>
+            <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Connexion</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="#" method="POST">
+                                <div class="form-group">
+                                    <label for="email" class="col-form-label">Email:</label>
+                                    <input type="email" class="form-control" name="email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="password" class="col-form-label">Mot de passe:</label>
+                                    <input type="password" class="form-control" name="password">
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                            <button type="submit" class="btn btn-primary">Se connecter</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--modal-->
+            <script>
+                $(document).ready(function () {
+                    $("#loginModal").modal();
+                });
+            </script>'
 
             <!-- Modal Post-->
             <div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -94,7 +129,7 @@ if (!empty($email) && !empty($password)) {
                                 </div>
                                 <div class="form-group">
                                     <label for="photo" class="col-form-label">Photo:</label>
-                                    <input type="file" class="form-control" name="photo">
+                                    <input type="file" class="form-control" name="image">
                                 </div>
                                 <div class="form-group">
                                     <label for="type" class="col-form-label">Catégorie:</label>
@@ -144,7 +179,7 @@ if (!empty($email) && !empty($password)) {
                                 <p class="card-text mb-auto"><?php echo $annonces["Description"]; ?></p>
                                 <a href="#">Continue reading</a>
                             </div>
-                            <svg class="bd-placeholder-img card-img-right flex-auto d-none d-lg-block" width="200" height="250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect fill="#55595c" width="100%" height="100%"></rect><text fill="#eceeef" dy=".3em" x="50%" y="50%">Thumbnail</text></svg>
+                            <img class="img img-responsive full-width" src="upload/<?php echo $annonces['nomImage'];?>">
                         </div>
                     </div> 
                     <?php
