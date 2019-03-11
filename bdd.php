@@ -107,10 +107,33 @@ function getTypes() {
     }
 }
 
+function getTypesById($idType) {
+    try {
+        $db = connectDB();
+        $query = $db->prepare('SELECT Name FROM TYPES WHERE idType=' . $idType);
+        $query->execute();
+        $resultat = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $resultat;
+    } catch (Exception $e) {
+        die('Erreur : ' . $e->getMessage());
+    }
+}
+
 function getAnnonces() {
     try {
         $db = connectDB();
         $query = $db->prepare('SELECT Name, Description, Prix, IdUser, IdType FROM ANNONCES');
+        $query->execute();
+        $resultat = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $resultat;
+    } catch (Exception $e) {
+        die('Erreur : ' . $e->getMessage());
+    }
+}
+function getAnnoncesByType($idType) {
+    try {
+        $db = connectDB();
+        $query = $db->prepare('SELECT Name, Description, Prix, IdUser, IdType FROM ANNONCES WHERE idType='. $idType);
         $query->execute();
         $resultat = $query->fetchAll(PDO::FETCH_ASSOC);
         return $resultat;

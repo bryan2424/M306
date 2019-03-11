@@ -10,7 +10,9 @@ session_start();
 require_once 'phpToHtml.php';
 require_once 'bdd.php';
 
-$arrAnnonce = getAnnonces();
+$arrTypes = getTypes();
+$arrAnnonce = getAnnoncesByType($_GET["types"]);
+$nameType = getTypesById($_GET["types"]);
 
 if (isset($_POST["email"])) {
     $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
@@ -54,9 +56,6 @@ if (!empty($email) && !empty($password)) {
                     </div>
 
                     <div class="col-4 d-flex justify-content-end align-items-center">
-                        <a class="text-muted" href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-3" focusable="false" role="img"><title>Search</title><circle cx="10.5" cy="10.5" r="7.5"></circle><line x1="21" y1="21" x2="15.8" y2="15.8"></line></svg>
-                        </a>
                         <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#loginModal" data-whatever="@mdo">Connexion</button>
                     </div>
                 </div>
@@ -101,7 +100,6 @@ if (!empty($email) && !empty($password)) {
                                     <label for="type" class="col-form-label">Catégorie:</label>
                                     <select name="type" class="form-control">
                                         <?php
-                                        $arrTypes = getTypes();
                                         foreach ($arrTypes as $types) {
                                             echo '<option class="form-control" value="' . $types["IdType"] . '">' . $types["Name"] . '</option>';
                                         }
@@ -126,20 +124,19 @@ if (!empty($email) && !empty($password)) {
 
             <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
                 <div class="col-md-6 px-0">
-                    <h1 class="display-4 font-italic">Nom de la catégorie</h1>
+                    <h1 class="display-4 font-italic"><?php echo $nameType[0]["Name"];?></h1>
                     <p class="lead my-3">Brève description de la catégorie en question</p>
                     <p class="lead mb-0"><a href="#" class="text-white font-weight-bold">La couleure de fond varie pour chaque catégorie</a></p>
                 </div>
             </div>
             <div class="row mb-2">
                 <?php
-                var_dump($arrAnnonce);
                 foreach ($arrAnnonce as $annonces) {
                     ?>
                     <div class="col-md-6">
                         <div class="card flex-md-row mb-4 shadow-sm h-md-250">
                             <div class="card-body d-flex flex-column align-items-start">
-                                <strong class="d-inline-block mb-2 text-primary"><?php echo $_GET["types"];?></strong>
+                                <strong class="d-inline-block mb-2 text-primary"><?php echo $nameType[0]["Name"];?></strong>
                                 <h3 class="mb-0">
                                     <a class="text-dark" href="#"><?php echo $annonces["Name"];?></a>
                                 </h3>
