@@ -110,7 +110,7 @@ function getTypes() {
 function getTypesById($idType) {
     try {
         $db = connectDB();
-        $query = $db->prepare('SELECT Name FROM TYPES WHERE idType=' . $idType);
+        $query = $db->prepare('SELECT Name, description FROM TYPES WHERE idType=' . $idType);
         $query->execute();
         $resultat = $query->fetchAll(PDO::FETCH_ASSOC);
         return $resultat;
@@ -122,7 +122,7 @@ function getTypesById($idType) {
 function getAnnonces() {
     try {
         $db = connectDB();
-        $query = $db->prepare('SELECT Name, Description, Prix, IdUser, IdType FROM ANNONCES');
+        $query = $db->prepare('SELECT Name, Description, Prix, nomImage, typeImage, IdUser, IdType FROM ANNONCES');
         $query->execute();
         $resultat = $query->fetchAll(PDO::FETCH_ASSOC);
         return $resultat;
@@ -133,7 +133,7 @@ function getAnnonces() {
 function getAnnoncesByType($idType) {
     try {
         $db = connectDB();
-        $query = $db->prepare('SELECT Name, Description, Prix, IdUser, IdType FROM ANNONCES WHERE idType='. $idType);
+        $query = $db->prepare('SELECT Name, Description, Prix, nomImage, typeImage, IdUser, IdType FROM ANNONCES WHERE idType='. $idType);
         $query->execute();
         $resultat = $query->fetchAll(PDO::FETCH_ASSOC);
         return $resultat;
@@ -148,7 +148,7 @@ function getAnnoncesByType($idType) {
 function insertPost($name, $description, $prix, $nomImage, $typeImage, $iduser, $idtype){
     try {
         $db = connectDB();
-        $query = $db->prepare('INSERT INTO `annonces`(`Name`, `Description`, `Prix`, `IdUser`, `nomImage`, `typeImage`, `IdType`) VALUES (:name, :description, :prix, :nomImage, :typeImage, :iduser, :idtype)');
+        $query = $db->prepare('INSERT INTO `annonces`(`Name`, `Description`, `Prix`, `nomImage`, `typeImage`, `IdUser`, `IdType`) VALUES (:name, :description, :prix, :nomImage, :typeImage, :iduser, :idtype)');
         $query->bindParam(":name", $name, PDO::PARAM_STR);
         $query->bindParam(":description", $description, PDO::PARAM_STR);
         $query->bindParam(":prix", $prix, PDO::PARAM_STR);

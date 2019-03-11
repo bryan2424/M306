@@ -10,7 +10,7 @@ require_once 'bdd.php';
 
 $arrTypes = getTypes();
 $arrAnnonce = getAnnoncesByType($_GET["types"]);
-$nameType = getTypesById($_GET["types"]);
+$type = getTypesById($_GET["types"]);
 
 if (isset($_POST["email"])) {
     $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
@@ -19,7 +19,7 @@ if (isset($_POST["password"])) {
     $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
 }
 if (!empty($email) && !empty($password)) {
-    userExist($email,$password);
+    userExist($email, $password);
     session_start();
     $_SESSION["email"] = $email;
     $idUser = getUserId($email);
@@ -56,11 +56,11 @@ if (!empty($email) && !empty($password)) {
                         <a class="blog-header-logo text-dark" href="#">M306</a>
                     </div>
                     <div class="col-4 d-flex justify-content-end align-items-center">
-                        <?php if(!isset($_SESSION["login"])) { ?>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#loginModal">Connexion</button>
-                        <?php } else{?>
-                        <button type="button" class="btn btn-sm btn-outline-secondary"><a href="logout.php">Deconnexion</a></button>
-                        <?php }?>
+                        <?php if (!isset($_SESSION["login"])) { ?>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#loginModal">Connexion</button>
+                        <?php } else { ?>
+                            <button type="button" class="btn btn-sm btn-outline-secondary"><a href="logout.php">Deconnexion</a></button>
+                        <?php } ?>
                     </div>
                 </div>
             </header>
@@ -159,9 +159,8 @@ if (!empty($email) && !empty($password)) {
 
             <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
                 <div class="col-md-6 px-0">
-                    <h1 class="display-4 font-italic"><?php echo $nameType[0]["Name"];?></h1>
-                    <p class="lead my-3">Brève description de la catégorie en question</p>
-                    <p class="lead mb-0"><a href="#" class="text-white font-weight-bold">La couleure de fond varie pour chaque catégorie</a></p>
+                    <h1 class="display-4 font-italic"><?php echo $type[0]["Name"]; ?></h1>
+                    <p class="lead my-3"><?php echo $type[0]["description"]; ?></p>
                 </div>
             </div>
             <div class="row mb-2">
@@ -171,15 +170,14 @@ if (!empty($email) && !empty($password)) {
                     <div class="col-md-6">
                         <div class="card flex-md-row mb-4 shadow-sm h-md-250">
                             <div class="card-body d-flex flex-column align-items-start">
-                                <strong class="d-inline-block mb-2 text-primary"><?php echo $nameType[0]["Name"];?></strong>
+                                <strong class="d-inline-block mb-2 text-primary"><?php echo $type[0]["Name"]; ?></strong>
                                 <h3 class="mb-0">
-                                    <a class="text-dark" href="#"><?php echo $annonces["Name"];?></a>
+                                    <a class="text-dark" href="#"><?php echo $annonces["Name"]; ?></a>
                                 </h3>
-                                <div class="mb-1 text-muted">Prix : <?php echo $annonces["Prix"];?>.- frs</div>
+                                <div class="mb-1 text-muted">Prix : <?php echo $annonces["Prix"]; ?>.- frs</div>
                                 <p class="card-text mb-auto"><?php echo $annonces["Description"]; ?></p>
-                                <a href="#">Continue reading</a>
                             </div>
-                            <img class="img img-responsive full-width" src="upload/<?php echo $annonces['nomImage'];?>">
+                            <img width="200" height="200" class="img img-responsive" src="upload/<?php echo $annonces['nomImage']; ?>">
                         </div>
                     </div> 
                     <?php
